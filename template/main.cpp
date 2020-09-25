@@ -3,11 +3,21 @@
 #include <stdlib.h>
 #include<math.h>
 
+
+static void idle(void)
+{
+    glutPostRedisplay();
+}
+static void key(unsigned char key, int x, int y)
+{
+    glutPostRedisplay();
+}
 void init(){
 
     glClearColor(0.0f,0.0f,0.0f,0.0f);
     glOrtho(-10,10,-10,10,-10,10);
 }
+
 static void display(void){
 
     glColor3f(1.0f,0.0f,0.0f);
@@ -29,7 +39,8 @@ int main(){
 
     init();
     glutDisplayFunc(display);
-
+    glutIdleFunc(idle);
+    glutKeyboardFunc()
     glutMainLoop();
 
     return EXIT_SUCCESS;

@@ -22,6 +22,12 @@ void moveobj()
     posy+=dy;
 
 }
+static void idle(void)
+{
+    moveobj();
+    glutPostRedisplay();
+}
+
 void init()
 {
 
@@ -81,6 +87,7 @@ int main()
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
+    glutIdleFunc(idle);
     glutMainLoop();
     return EXIT_SUCCESS;
 }
