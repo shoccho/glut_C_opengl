@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1601015427 source:c:\users\shoccho\code\c_opengl\snek\main.cpp
+1601016453 source:c:\users\shoccho\code\c_opengl\snek\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<stdlib.h>

@@ -70,7 +70,7 @@ static void key(unsigned char key, int x, int y)
         dx=-1;
         dy=0;
     }
-    if(key=='w' && dy!=-1){
+    else if(key=='w' && dy!=-1){
         dy=1;
         dx=0;
     }

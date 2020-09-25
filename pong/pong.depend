@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1601010470 source:c:\users\shoccho\code\c_opengl\pong\main.cpp
+1601011195 source:c:\users\shoccho\code\c_opengl\pong\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<stdlib.h>
