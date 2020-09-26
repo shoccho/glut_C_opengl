@@ -3,13 +3,17 @@
 #include <stdlib.h>
 #include<stdio.h>
 #include<math.h>
-#define twicePi 2*3.14159
 #include<bits/stdc++.h>
+#define twicePi 2*3.14159
+bool moving =false;
+
 struct point{
-int x,y;
+float x,y;
 };
 std::vector<struct point> snek;
 int len=3;
+int start_time=time(NULL);
+int framecount=0;
 void drawFilledelipse(GLfloat x, GLfloat y, GLfloat xcenter,GLfloat ycenter)
 {
 
@@ -26,75 +30,88 @@ void drawFilledelipse(GLfloat x, GLfloat y, GLfloat xcenter,GLfloat ycenter)
     glEnd();
 }
 struct point fruit;
-int dx=0;
-int dy=0;
+float dx=0;
+float dy=0;
 
 void create_snek(){
-    int x=0,y=0;
+    float x=0,y=0;
     snek.clear();
     for(int i=0;i<len;i++){
     //snek = new std::vector<struct point>;
         struct point p;
         p.x=x;
         p.y=y;
-        printf("%d %d",i,y);
+        printf("%lf %lf",i,y);
         snek.push_back(p);
         x-=1;
     }
 }
 static void idle(void)
 {
+    if(!moving) return;
     int i;
+     i=0;
+     float px=snek[i].x;
+     float py=snek[i].y;
+    snek[i].x+=dx;
+    if(snek[i].x>50 || snek[i].x<-50)snek[i].x*=-1;
+    snek[i].y+=dy;
+    if(snek[i].y>50 || snek[i].y<-50)snek[i].y*=-1;
 
-    for(int i=1;i<len && (dx!=0 || dy!=0);i++ ){
+
+    for(int i=2;i<len ;i++ ){
         snek[i].x=snek[i-1].x;
         snek[i].y=snek[i-1].y;
     }
-    i=0;
-    snek[i].x+=dx;
-    if(snek[i].x>100 || snek[i].x<-100)snek[i].x*=-1;
-    snek[i].y+=dy;
-    if(snek[i].y>100 || snek[i].y<-100)snek[i].y*=-1;
+
+    if(snek[0].x==fruit.x && snek[0].y==fruit.y){
+            len++;
+            struct point p;
+            p.x=fruit.x;
+            p.y=fruit.y;
+            snek.push_back(p);
+            printf("%d\n",len);
+
+    }
     glutPostRedisplay();
 }
 static void key(unsigned char key, int x, int y)
 {   if (key=='p'){
+        moving=!moving;
+    }
+    else {
+        moving = true;
+    }
+    if(key=='d' && dx!=-.5){
+        dx=.5;
+        dy=0;
+
+    }
+    else if(key=='a' && dx!=.5){
+        dx=-.5;
+        dy=0;
+    }
+    else if(key=='w' && dy!=-.5){
+        dy=.5;
         dx=0;
-        dy=0;
     }
-    if(key=='d' && dx!=-1){
-        dx=1;
-        dy=0;
-    }
-    else if(key=='a' && dx!=1){
-        dx=-1;
-        dy=0;
-    }
-    else if(key=='w' && dy!=-1){
-        dy=1;
-        dx=0;
-    }
-    else if(key=='s' && dy!=1){
-        dy=-1;
+    else if(key=='s' && dy!=.5){
+        dy=-.5;
         dx=0;
     }
     glutPostRedisplay();
 }
-void init(){
-    create_snek();
 
-    glClearColor(0.0f,0.0f,0.0f,0.0f);
-    glOrtho(-100,100,-100,100,-100,100);
-}
 
 static void display(void){
+
 	glClear(GL_COLOR_BUFFER_BIT );
     glColor3f(1.0f,0.0f,0.0f);
 
 
     for(int i=0;i<len;i++ ){
         glBegin(GL_QUADS);
-        printf("%d\n",dx);
+        //printf("%d\n",dx);
             glVertex2d(snek[i].x+.5,snek[i].y+.5);
             glVertex2d(snek[i].x+.5,snek[i].y-.5);
             glVertex2d(snek[i].x-.5,snek[i].y-.5);
@@ -112,8 +129,29 @@ static void display(void){
 
 
     glFlush();
-}
+    framecount++;
+    int cur_time=time(NULL);
+    if(framecount>=10){
 
+        framecount=0;
+        while(cur_time-start_time<1){
+
+             cur_time=time(NULL);
+        }
+        start_time=cur_time;
+    }
+}
+void init(){
+    create_snek();
+
+    glClearColor(0.0f,0.0f,0.0f,0.0f);
+    glOrtho(-50,50,-50,50,-50,50);
+
+    glutDisplayFunc(display);
+    glutIdleFunc(idle);
+
+    glutKeyboardFunc(key);
+}
 
 int main(){
     fruit.x=10;
@@ -125,9 +163,7 @@ int main(){
     glutCreateWindow("Snek");
 
     init();
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-    glutKeyboardFunc(key);
+
     glutMainLoop();
 
     return EXIT_SUCCESS;
