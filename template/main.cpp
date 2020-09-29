@@ -40,7 +40,7 @@ int main(){
     init();
     glutDisplayFunc(display);
     glutIdleFunc(idle);
-    glutKeyboardFunc()
+    glutKeyboardFunc();
     glutMainLoop();
 
     return EXIT_SUCCESS;
