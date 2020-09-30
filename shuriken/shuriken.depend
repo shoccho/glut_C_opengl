@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1601454664 source:c:\users\shoccho\code\c_opengl\shuriken\main.cpp
+1601477705 source:c:\users\shoccho\code\c_opengl\shuriken\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<stdlib.h>

@@ -69,17 +69,20 @@ static void display(void)
 
     glColor3f(1.0f,0.0f,0.0f);
 
-    glBegin(GL_POLYGON);
-        glVertex2d(0,6);
-        glVertex2d(1,4);
-        glVertex2d(3,3);
-        glVertex2d(1,2);
-        glVertex2d(0,0);
-        glVertex2d(-1,2);
-        glVertex2d(-3,3);
-        glVertex2d(-1,4);
+glBegin(GL_POLYGON);
 
-    glEnd();
+    glVertex3f(1.0f,4.0f,0.0f);
+    glVertex3f(3.0f,3.0f,0.0f);
+    glVertex3f(1.0f,2.0f,0.0f);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glVertex3f(-1.0f,2.0f,0.0f);
+    glVertex3f(-3.0f,3.0f,0.0f);
+    glVertex3f(-1.0f,4.0f,0.0f);
+
+    glVertex3f(0.0f,6.0f,0.0f);
+
+glEnd();
+
     showgrid();
     glColor3f(1.0f,1.f,1.0f);
     renderBitmapString(0,0,(void *)font9x15,"(0,0)");

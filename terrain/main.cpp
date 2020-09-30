@@ -1,30 +1,35 @@
 #include<windows.h>
 #include <GL/glut.h>
 #include <stdlib.h>
-#include<stdio.h>
 #include<math.h>
-#define twicePi 2*3.14159
 
-void drawFilledelipse(GLfloat x, GLfloat y, GLfloat xcenter,GLfloat ycenter)
-{
 
-    int triangleAmount = 20;
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(x, y);
-    for (int i = 0; i <= triangleAmount; i++)
-    {
-        glVertex2f(
-            x + ((xcenter)* cos(i * twicePi / triangleAmount)),
-            y + ((ycenter)* sin(i * twicePi / triangleAmount))
-        );
-    }
-    glEnd();
-}
+//glut fonts
+const int font8x15=(int)GLUT_BITMAP_8_BY_13;
+const int font9x15=(int)GLUT_BITMAP_9_BY_15;
+const int fontTimes10=(int)GLUT_BITMAP_TIMES_ROMAN_10;
+const int fontTimes24=(int)GLUT_BITMAP_TIMES_ROMAN_24;
+const int fontHelvatica10=(int)GLUT_BITMAP_HELVETICA_10;
+const int fontHelvatica12=(int)GLUT_BITMAP_HELVETICA_12;
+const int fontHelvatica18=(int)GLUT_BITMAP_HELVETICA_18;
 
+int orthox=10;
+int orthoy=10;
+int orthoz=10;
 
 static void idle(void)
 {
     glutPostRedisplay();
+}
+
+void renderBitmapString(float x, float y, void *font,const char *string)
+{
+    const char *c;
+    glRasterPos2f(x, y);
+    for (c=string; *c != '\0'; c++)
+    {
+        glutBitmapCharacter(font, *c);
+    }
 }
 static void key(unsigned char key, int x, int y)
 {
@@ -32,53 +37,56 @@ static void key(unsigned char key, int x, int y)
 }
 void init()
 {
+    glClearColor(0.0f,0.0f,0.0f,0.0f);
+    glOrtho(-orthox,orthox,-orthoy,orthoy,-orthoz,orthoz);
+}
+void showgrid(){
+    glBegin(GL_LINES);
+    glColor3f(.5f,.5f,.5f);
+    for (int i=-orthoy; i<=orthoy; i++)
+    {
+        glVertex3d(10,i,0);
+        glVertex3d(-10,i,0);
 
+    }
+    for (int i=-orthox; i<=orthox; i++)
+    {
+        glVertex3d(i,10,0);
+        glVertex3d(i,-10,0);
 
-    glOrtho(-100,100,-100,100,-100,100);
+    }
+    glColor3f(0.0f,0.0f,1.0f);
+    glVertex2d(-10,0);
+    glVertex2d(10,0);
+    glVertex2d(0,10);
+    glVertex2d(0,-10);
+    glEnd();
 }
 
 static void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3d(1,0,0);
-    //const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-    //const double a = t*90.0;
-    glPushMatrix();
-    glRotated(60,0,0,0);
-    int rows=100;
-    int columns=100,i;
-    glBegin(GL_LINES);
-    /* Horizontal lines. */
-    for (i=0; i<=rows; i++)
-    {
-        glVertex2f(0, i);
-        glVertex2f(columns, i);
-    }
-    /* Vertical lines. */
-    for (i=0; i<=columns; i++)
-    {
-        glVertex2f(i, 0);
-        glVertex2f(i, rows);
-    }
-    glEnd();
 
-    glPopMatrix();
-    glutSwapBuffers();
+
+    glRotated(45,0,0,0);
+showgrid();
+
+    //glFlush();
+       glutSwapBuffers();
 }
 
 int main()
 {
 
     glutInitWindowSize(700,700);
-    glutInitWindowPosition(100,100);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowPosition(300,100);
+    glutInitDisplayMode( GLUT_DOUBLE|  GLUT_RGB);
     glutCreateWindow("Terrain");
 
     init();
     glutDisplayFunc(display);
     glutIdleFunc(idle);
-    glEnable(GL_DEPTH_TEST);
-
+    glutKeyboardFunc(key);
     glutMainLoop();
 
     return EXIT_SUCCESS;
