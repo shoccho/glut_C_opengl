@@ -40,30 +40,8 @@ void init()
     glClearColor(0.0f,0.0f,0.0f,0.0f);
     glOrtho(-10,10,-10,10,-10,10);
 }
-
-static void display(void)
-{
-
-    glColor3f(1.0f,0.0f,0.0f);
-
-    glBegin(GL_POLYGON);
-        glVertex2d(0,6);
-        glVertex2d(1,4);
-        glVertex2d(3,3);
-        glVertex2d(1,2);
-        glVertex2d(0,0);
-        glEnd();
-        glBegin(GL_POLYGON);
-        glVertex2d(0,6);
-        glVertex2d(-1,2);
-        glVertex2d(-3,3);
-        glVertex2d(-1,4);
-
-    glEnd();
-
-
-
-    glBegin(GL_LINES);
+void showgrid(){
+   glBegin(GL_LINES);
     glColor3f(.5f,.5f,.5f);
     for (int i=-10; i<=10; i++)
     {
@@ -85,6 +63,24 @@ static void display(void)
     glVertex2d(0,-10);
 
     glEnd();
+    }
+static void display(void)
+{
+
+    glColor3f(1.0f,0.0f,0.0f);
+
+    glBegin(GL_POLYGON);
+        glVertex2d(0,6);
+        glVertex2d(1,4);
+        glVertex2d(3,3);
+        glVertex2d(1,2);
+        glVertex2d(0,0);
+        glVertex2d(-1,2);
+        glVertex2d(-3,3);
+        glVertex2d(-1,4);
+
+    glEnd();
+    showgrid();
     glColor3f(1.0f,1.f,1.0f);
     renderBitmapString(0,0,(void *)font9x15,"(0,0)");
     renderBitmapString(1,2,(void *)font9x15,"(1,2)");
