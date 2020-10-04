@@ -41,26 +41,28 @@ void init()
     glOrtho(-orthox,orthox,-orthoy,orthoy,-orthoz,orthoz);
 }
 void showgrid(){
+  void showgrid(){
     glBegin(GL_LINES);
     glColor3f(.5f,.5f,.5f);
     for (int i=-orthoy; i<=orthoy; i++)
     {
-        glVertex2d(10,i);
-        glVertex2d(-10,i);
+        glVertex2d(orthox,i);
+        glVertex2d(-orthox,i);
 
     }
     for (int i=-orthox; i<=orthox; i++)
     {
-        glVertex2d(i,10);
-        glVertex2d(i,-10);
+        glVertex2d(i,orthoy);
+        glVertex2d(i,-orthoy);
 
     }
     glColor3f(0.0f,0.0f,1.0f);
-    glVertex2d(-10,0);
-    glVertex2d(10,0);
-    glVertex2d(0,10);
-    glVertex2d(0,-10);
+    glVertex2d(-orthox,0);
+    glVertex2d(orthox,0);
+    glVertex2d(0,orthoy);
+    glVertex2d(0,-orthoy);
     glEnd();
+}
 }
 
 static void display(void)
