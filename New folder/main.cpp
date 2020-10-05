@@ -48,18 +48,18 @@ void showgrid()
 {
     glBegin(GL_LINES);
     glColor3f(.5f,.5f,.5f);
-    for (int i=-orthoy; i<=orthoy; i++)
-    {
-        glVertex2d(orthox,i);
-        glVertex2d(-orthox,i);
+  //  for (int i=-orthoy; i<=orthoy; i++)
+   // {
+   //     glVertex2d(orthox,i);
+  //      glVertex2d(-orthox,i);
 
-    }
-    for (int i=-orthox; i<=orthox; i++)
-    {
-        glVertex2d(i,orthoy);
-        glVertex2d(i,-orthoy);
+  //  }
+   // for (int i=-orthox; i<=orthox; i++)
+   // {
+     //   glVertex2d(i,orthoy);
+    //    glVertex2d(i,-orthoy);
 
-    }
+  //  }
     glColor3f(0.0f,0.0f,1.0f);
     glVertex2d(-orthox,0);
     glVertex2d(orthox,0);
@@ -67,7 +67,6 @@ void showgrid()
     glVertex2d(0,-orthoy);
     glEnd();
 }
-
 
 static void display(void)
 {
@@ -78,8 +77,9 @@ static void display(void)
     {
         glVertex2d(xpoints[i],ypoints[i]);
     }
-    //showgrid();
+
     glEnd();
+    showgrid();
     glFlush();
 }
 
@@ -155,7 +155,7 @@ void  Bresenham(double m,float sx,float sy, float ex,float ey)
 
 int main()
 {
-    float sx=0,sy=0,ex=100,ey=100;
+    float sx=0,sy=10,ex=22,ey=20;
 
     double m =((ey-sy)/(ex-sx));
     printf("%lf",m);
@@ -163,7 +163,7 @@ int main()
     glutInitWindowSize(700,700);
     glutInitWindowPosition(300,100);
     glutInitDisplayMode( GLUT_SINGLE|  GLUT_RGB);
-    glutCreateWindow("Template");
+    glutCreateWindow("Bresenham");
 
     init();
     glutDisplayFunc(display);

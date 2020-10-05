@@ -13,9 +13,9 @@ const int fontHelvatica10=(int)GLUT_BITMAP_HELVETICA_10;
 const int fontHelvatica12=(int)GLUT_BITMAP_HELVETICA_12;
 const int fontHelvatica18=(int)GLUT_BITMAP_HELVETICA_18;
 
-int orthox=700;
-int orthoy=700;
-int orthoz=700;
+int orthox=200;
+int orthoy=200;
+int orthoz=200;
 
 std::vector<int>xpoints;
 std::vector<int>ypoints;
@@ -48,18 +48,18 @@ void showgrid()
 {
     glBegin(GL_LINES);
     glColor3f(.5f,.5f,.5f);
-    for (int i=-orthoy; i<=orthoy; i++)
-    {
-        glVertex2d(orthox,i);
-        glVertex2d(-orthox,i);
+  //  for (int i=-orthoy; i<=orthoy; i++)
+   // {
+   //     glVertex2d(orthox,i);
+  //      glVertex2d(-orthox,i);
 
-    }
-    for (int i=-orthox; i<=orthox; i++)
-    {
-        glVertex2d(i,orthoy);
-        glVertex2d(i,-orthoy);
+  //  }
+   // for (int i=-orthox; i<=orthox; i++)
+   // {
+     //   glVertex2d(i,orthoy);
+    //    glVertex2d(i,-orthoy);
 
-    }
+  //  }
     glColor3f(0.0f,0.0f,1.0f);
     glVertex2d(-orthox,0);
     glVertex2d(orthox,0);
@@ -80,6 +80,7 @@ static void display(void)
     }
     //showgrid();
     glEnd();
+    showgrid();
     glFlush();
 }
 int mkp(float x)
@@ -130,13 +131,13 @@ void dda(double m, float sx,float sy, float ex,float ey)
 
 int main()
 {
-    float sx=0,sy=0,ex=100,ey=100;
+    float sx=-4,sy=-5,ex=5,ey=3;
     double m =((ey-sy)/(ex-sx));
     dda(m,sx,sy,ex,ey);
-    glutInitWindowSize(700,700);
+    glutInitWindowSize(400,400);
     glutInitWindowPosition(300,100);
     glutInitDisplayMode( GLUT_SINGLE|  GLUT_RGB);
-    glutCreateWindow("Template");
+    glutCreateWindow("DDA");
 
     init();
     glutDisplayFunc(display);
