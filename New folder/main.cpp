@@ -48,18 +48,18 @@ void showgrid()
 {
     glBegin(GL_LINES);
     glColor3f(.5f,.5f,.5f);
-  //  for (int i=-orthoy; i<=orthoy; i++)
-   // {
-   //     glVertex2d(orthox,i);
-  //      glVertex2d(-orthox,i);
+    //  for (int i=-orthoy; i<=orthoy; i++)
+    // {
+    //     glVertex2d(orthox,i);
+    //      glVertex2d(-orthox,i);
 
-  //  }
-   // for (int i=-orthox; i<=orthox; i++)
-   // {
-     //   glVertex2d(i,orthoy);
+    //  }
+    // for (int i=-orthox; i<=orthox; i++)
+    // {
+    //   glVertex2d(i,orthoy);
     //    glVertex2d(i,-orthoy);
 
-  //  }
+    //  }
     glColor3f(0.0f,0.0f,1.0f);
     glVertex2d(-orthox,0);
     glVertex2d(orthox,0);
@@ -86,12 +86,10 @@ static void display(void)
 void  Bresenham(double m,float sx,float sy, float ex,float ey)
 {
     float p = 0;
-    if (m<0){
-        printf("I cannot do this !");
-        return;
-    }
+    float pm=abs(m);
 
-    if (m<=1)p = 2 * (ey-sy) - (ex-sx);
+
+    if (pm<=1)p = 2 * (ey-sy) - (ex-sx);
     else
     {
         p = 2 * (ex-sx) - (ey-sy);
@@ -103,22 +101,25 @@ void  Bresenham(double m,float sx,float sy, float ex,float ey)
 
     while(1)
     {
-       // std::printf("here");
+        // std::printf("here");
         xpoints.push_back(nx);
         ypoints.push_back(ny);
-        if(nx==ex && ny==ey) break;
+        if(abs(nx-ex)<1 && abs(ny-ey)<1) break;
         float xk,yk;
-        if (m<=1)
+        if (pm<=1)
         {
             if (p<=0 )
             {
-                xk = nx+1;
+                if(sx<ex)xk = nx+1;
+                else xk = nx-1;
                 yk = ny;
             }
             else
             {
-                yk = ny+1;
-                xk = nx+1;
+                if(sy<ey)yk = ny+1;
+                else yk = ny-1;
+                if(sx<ex)xk = nx+1;
+                else xk = nx-1;
             }
         }
         else
@@ -126,16 +127,20 @@ void  Bresenham(double m,float sx,float sy, float ex,float ey)
             if (p<=0 )
             {
                 xk = nx;
-                yk = ny+1;
+                if(sy<ey)
+                    yk = ny+1;
+                else yk=ny+1;
             }
             else
             {
-                yk = ny+1;
-                xk = nx+1;
+                if(sy<ey)yk = ny+1;
+                else yk = ny-1;
+                if(sx<ex)xk = nx+1;
+                else xk = nx-1;
             }
         }
         //print("{0}\t ({1}, {2})\t {3}\t ({4},{5})".format(i,nx,ny,p,xk,yk))
-        if (m<=1)
+        if (pm<=1)
         {
             p = p + 2 * (ey-sy) - 2 * (ex-sx) * (yk-ny);
         }
@@ -155,7 +160,7 @@ void  Bresenham(double m,float sx,float sy, float ex,float ey)
 
 int main()
 {
-    float sx=0,sy=10,ex=22,ey=20;
+    float ex=200,ey=30,sx=80,sy=320;
 
     double m =((ey-sy)/(ex-sx));
     printf("%lf",m);

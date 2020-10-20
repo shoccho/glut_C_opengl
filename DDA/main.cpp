@@ -131,7 +131,7 @@ void dda(double m, float sx,float sy, float ex,float ey)
 
 int main()
 {
-    float sx=-4,sy=-5,ex=5,ey=3;
+    float sx=1,sy=5,ex=22,ey=17;
     double m =((ey-sy)/(ex-sx));
     dda(m,sx,sy,ex,ey);
     glutInitWindowSize(400,400);

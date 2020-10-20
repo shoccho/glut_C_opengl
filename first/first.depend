@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1600832640 source:/home/shoccho/Code/C_opengl/first/main.c
-	<stdio.h>
-	<stdlib.h>
-	<GL/glx.h>
-	<GL/gl.h>
-	<X11/X.h>
-	<X11/keysym.h>
-

@@ -1,4 +1,4 @@
-#include<windows.h>
+
 #include <GL/glut.h>
 #include <stdlib.h>
 #include<stdio.h>
@@ -87,8 +87,8 @@ static void display(void){
     glFlush();
 }
 
-int main(){
-
+int main(int argc, char** argv ){
+	glutInit(&argc, argv );
     glutInitWindowSize(600,600);
     glutInitWindowPosition(100,100);
     glutInitDisplayMode( GLUT_SINGLE|  GLUT_RGB);
