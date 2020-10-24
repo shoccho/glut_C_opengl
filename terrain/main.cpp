@@ -50,24 +50,24 @@ void draw(void)
     glPushMatrix();
     glTranslatef(0, 0.0f, -8.0f);
     //glRotatef(30, 1, 0, 0);
-    // glPushMatrix();
-    // for (int x = 0; x < cols; x++)
-    // {
-    //     glBegin(GL_TRIANGLE_STRIP);
-    //     for (int y = 0; y < rows; y++)
-    //     {
-    //         glVertex3d(x * scl, y * scl, 0);
-    //         //glVertex3d((x + 1) * scl, y * scl, 0);
-    //         glVertex3d((x)*scl, (y + 1) * scl, 0);
-    //     }
-    //     glEnd();
-    // }
+
+    for (int x = 0; x < cols; x++)
+    {
+        glBegin(GL_TRIANGLE_STRIP);
+        for (int y = 0; y < rows; y++)
+        {
+            glVertex3d(x * scl, y * scl, 0);
+            //glVertex3d((x + 1) * scl, y * scl, 0);
+            glVertex3d((x)*scl, (y + 1) * scl, 0);
+        }
+        glEnd();
+    }
 
     glBegin(GL_LINES);
 
     glVertex3d(0, 0, 0);
     glColor3f(0, 1, 0);
-    glVertex3d(width, height, 0);
+    glVertex3d(-width, -height, 0);
     glEnd();
     glPopMatrix();
     //glFlush();
@@ -81,7 +81,7 @@ void timer(int)
 }
 void reshape(int width, int height)
 {
-    glViewport(0, 0, width, height);
+    //glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //gluOrtho2D(-10, 10, -10, 10);
