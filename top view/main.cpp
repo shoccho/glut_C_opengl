@@ -61,7 +61,7 @@ void draw(void)
     glBegin(GL_QUADS);
 
     int i = 0;
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 10; i += 2)
     {
         glVertex3f(i - 1.0, i - 1.0, 0);
         glVertex3f(i + 1.0, i - 1.0, 0);
