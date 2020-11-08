@@ -5,20 +5,13 @@
 #include <bits/stdc++.h>
 
 //glut fonts
-const int font8x15 = (int)GLUT_BITMAP_8_BY_13;
-const int font9x15 = (int)GLUT_BITMAP_9_BY_15;
-const int fontTimes10 = (int)GLUT_BITMAP_TIMES_ROMAN_10;
-const int fontTimes24 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
-const int fontHelvatica10 = (int)GLUT_BITMAP_HELVETICA_10;
-const int fontHelvatica12 = (int)GLUT_BITMAP_HELVETICA_12;
-const int fontHelvatica18 = (int)GLUT_BITMAP_HELVETICA_18;
 
 int orthox = 100;
 int orthoy = 100;
 int orthoz = 100;
 
-std::vector<int> xpoints;
-std::vector<int> ypoints;
+std::vector<float> xpoints;
+std::vector<float> ypoints;
 
 static void idle(void)
 {
@@ -73,25 +66,30 @@ static void display(void)
     glClear(GL_COLOR_BUFFER_BIT);
     showgrid();
     glColor3f(1.0f, 1.0f, 1.0f);
+    glPushMatrix();
+    glTranslated(-4,-5,0);
     glBegin(GL_POINTS);
+    
     for (int i = 0; i < xpoints.size(); i++)
     {
         glVertex2d(xpoints[i], ypoints[i]);
-        glVertex2d(xpoints[i], -ypoints[i]);
-        glVertex2d(-xpoints[i], ypoints[i]);
-        glVertex2d(-xpoints[i], -ypoints[i]);
+        glVertex2d(xpoints[i], -abs(ypoints[i]));
+glVertex2d(-abs(xpoints[i]), ypoints[i]);
+        glVertex2d(-abs(xpoints[i]), -abs(ypoints[i]));
 
         glVertex2d(ypoints[i], xpoints[i]);
-        glVertex2d(ypoints[i], -xpoints[i]);
-        glVertex2d(-ypoints[i], xpoints[i]);
-        glVertex2d(-ypoints[i], -xpoints[i]);
+        glVertex2d(ypoints[i], -abs(xpoints[i]));
+        glVertex2d(-abs(ypoints[i]), xpoints[i]);
+        glVertex2d(-abs(ypoints[i]), -abs(xpoints[i]));
     }
-
+    
     glEnd();
-
+    glPopMatrix();
+    
+    
     glFlush();
 }
-void circle(float r, int cx, int cy)
+void circle(float r, float cx, float cy)
 {
 
     float p = 1 - r;
@@ -107,8 +105,8 @@ void circle(float r, int cx, int cy)
     {
         printf("%d,\t\t(%.02lf %.02lf),\t\t%.02lf,\t\t", i, x, y, p);
         i += 1;
-        xpoints.push_back(x + cx);
-        ypoints.push_back(y + cy);
+        xpoints.push_back((x ));
+        ypoints.push_back((y ));
         if (p >= 0)
         {
             xk += 1;
@@ -121,7 +119,7 @@ void circle(float r, int cx, int cy)
         p = p + (2 * xk + 1) + ((yk) * (yk)-y * y) - (yk - y);
         x = xk;
         y = yk;
-        printf("(%.02lf %.02lf),\t\t(%.02lf %.02lf)\n", xk, yk, xk + cx, xk + cy);
+        printf("(%.02lf %.02lf),\t\t(%.2lf %.2lf)\n", xk, yk, xk + cx, yk + cy);
         // return (px,py)
     }
 }
@@ -130,7 +128,7 @@ int main(int argc, char **argv)
 {
 
     glutInit(&argc, argv);
-    circle(8, 0, 0);
+    circle(14,-4, -5);
     glutInitWindowSize(700, 700);
     glutInitWindowPosition(300, 100);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

@@ -3,6 +3,31 @@
 
 int angle_x = 0;
 
+void showgrid(){
+    int ortho=10;
+   glBegin(GL_LINES);
+    glColor3f(.5f,.5f,.5f);
+    for (int i=-ortho; i<=ortho; i++)
+    {
+        glVertex2d(ortho,i);
+        glVertex2d(-ortho,i);
+
+    }
+    for (int i=-ortho; i<=ortho; i++)
+    {
+        glVertex2d(i,ortho);
+        glVertex2d(i,-ortho);
+
+    }
+    glColor3f(0.0f,0.0f,1.0f);
+    glVertex2d(-ortho,0);
+    glVertex2d(ortho,0);
+
+    glVertex2d(0,ortho);
+    glVertex2d(0,-ortho);
+
+    glEnd();
+}
 void init(void)
 {
     glClearColor(0, 0, 0, 0);
@@ -12,11 +37,18 @@ void init(void)
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+    showgrid();
     glPushMatrix();
-    glRotated(angle_x, 0, 0, 1);
-    glColor3f(1, 0, 0);
-    glRectf(-25, -25, 25, 25);
+    glRotated(50,0,1,0);
+    glBegin(GL_QUADS);
+    glVertex2d(5,3);
+    glVertex2d(-4,3);
+    glVertex2d(-6,-2);
+    glVertex2d(6,-2);
+    glEnd();
     glPopMatrix();
+    
+    
     glutSwapBuffers();
 }
 
@@ -31,7 +63,7 @@ void reshape(int w, int h)
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, (GLdouble)w, 0, (GLdouble)h, -1, 1);
+    glOrtho(-10, 10, -10, 10, -10, 10);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -40,7 +72,7 @@ void mouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        glutIdleFunc(spin);
+        glutIdleFunc(NULL);
     }
     else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
