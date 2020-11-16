@@ -15,10 +15,11 @@ const int fontHelvatica12 = (int)GLUT_BITMAP_HELVETICA_12;
 const int fontHelvatica18 = (int)GLUT_BITMAP_HELVETICA_18;
 
 float p_pos_x = 0;
-float p_pos_y = 0;
+float p_pos_y = -1;
 float p_pos_z = 0;
 float xrot = 0;
 float yrot = 0;
+
 void renderBitmapString(float x, float y, void *font, const char *string)
 {
     const char *c;
@@ -53,43 +54,37 @@ void init()
 }
 void draw(void)
 {
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    int scl = 2;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glTranslatef(p_pos_x, p_pos_y, p_pos_z);
     glRotated(xrot, 0, 1, 0);
-    glBegin(GL_QUADS);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glBegin(GL_TRIANGLE_STRIP);
+
     glPushMatrix();
     glRotated(-10, 1, 0, 0);
     glColor3d(.2, 1, .2);
-    glVertex3f(-100.0, -1.0, -100.0);
-    glVertex3f(-100.0, -1.0, 100.0);
-    glVertex3f(100.0, -1.0, 100.0);
-    glVertex3f(100.0, -1.0, -100.0);
+    // glVertex3f(-100.0, -1.0, -100.0);
+    // glVertex3f(-100.0, -1.0, 100.0);
+    // glVertex3f(100.0, -1.0, 100.0);
+    // glVertex3f(100.0, -1.0, -100.0);
+
+    for (int i = -100; i <= 100; i += scl)
+    {
+        for (int j = -100; j <= 100; j += scl)
+        {
+            glVertex3d(i, -(rand() % 2), j);
+            glVertex3d(i + scl, -(rand() % 2), j);
+            glVertex3d(i, -(rand() % 2), j + scl);
+            // glVertex3d(i + scl, -rand() % 3, j + scl);
+        }
+    }
     glEnd();
     glPopMatrix();
 
-    //walls
-
-    glPushMatrix();
-    glColor3d(1, 1, 0);
-    glBegin(GL_QUADS);
-    glVertex3d(1, .5, -10);
-    glVertex3d(-1, .5, -10);
-    glVertex3d(-1, -.5, -10);
-    glVertex3d(1, -.5, -10);
-    glColor3d(0, 0, 1);
-    glVertex3d(3, .5, -15);
-    glVertex3d(1, .5, -15);
-    glVertex3d(1, -.5, -15);
-    glVertex3d(3, -.5, -15);
-    glColor3d(1, 0, 1);
-    glVertex3d(1, .5, -20);
-    glVertex3d(-1, .5, -20);
-    glVertex3d(-1, -.5, -20);
-    glVertex3d(1, -.5, -20);
-
-    glEnd();
-    glPopMatrix();
     //glFlush();
     glutSwapBuffers();
 }
@@ -97,7 +92,7 @@ void timer(int)
 {
     glutPostRedisplay();
     // std::cout << "x: " << p_pos_x << "y: " << p_pos_y << "z: " << p_pos_z << std::endl;
-    glutTimerFunc(1000 / 60, timer, 0);
+    glutTimerFunc(1000 / 5, timer, 0);
     //do update here
 }
 void reshape(int width, int height)
@@ -118,7 +113,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50, 25);
     glutInitWindowSize(500, 500);
-    glutCreateWindow("Some walls");
+    glutCreateWindow("terrain");
     glutDisplayFunc(draw);
     glutReshapeFunc(reshape);
     glutTimerFunc(0, timer, 0);

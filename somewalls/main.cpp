@@ -6,13 +6,6 @@
 #include <iostream>
 
 //glut fonts
-const int font8x15 = (int)GLUT_BITMAP_8_BY_13;
-const int font9x15 = (int)GLUT_BITMAP_9_BY_15;
-const int fontTimes10 = (int)GLUT_BITMAP_TIMES_ROMAN_10;
-const int fontTimes24 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
-const int fontHelvatica10 = (int)GLUT_BITMAP_HELVETICA_10;
-const int fontHelvatica12 = (int)GLUT_BITMAP_HELVETICA_12;
-const int fontHelvatica18 = (int)GLUT_BITMAP_HELVETICA_18;
 
 float p_pos_x = 0;
 float p_pos_y = 0;
