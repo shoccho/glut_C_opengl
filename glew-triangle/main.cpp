@@ -17,16 +17,15 @@ int main(void)
 		return -1;
 	}
 
-	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
-		/* Problem: glewInit failed, something is seriously wrong. */
+
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 	}
 	fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
-	//fprintf(stdout, "Status: Using GL %s\n", glewGetString(GL));
+
 	float positions[6] = {
 		-0.5f, -0.5f,
 		0.0f, 0.5f,
@@ -44,9 +43,7 @@ int main(void)
 	{
 
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
