@@ -9,12 +9,37 @@ static float translate_y = 0.0;
 int scl = 10;
 void display(void)
 {
+
     glClear(GL_COLOR_BUFFER_BIT);
+
+    //flag for white or black
+    bool w = false;
+    //draw corners
     glPushMatrix();
-    glRotatef(spin, 0.0, 0.0, 1.0);
-    //draw center
+    for (int rot = 0; rot <= 360; rot += 90)
+    {
+        glRotated(rot, 0, 0, 1);
+        for (int pos = 50; pos <= 100; pos += scl, w = !w)
+        {
+            if (w)
+                glColor3f(1, 1, 1);
+            else
+                glColor3f(0, 0, 0);
+
+            glRectf(pos, pos, pos + scl, pos + scl);
+        }
+    }
+    glPopMatrix();
+
+    //center moveable objs
     glPushMatrix();
     glTranslatef(translate_x, translate_y, 0);
+    glRotatef(spin, 0.0, 0.0, 1.0);
+    //draw center
+
+    //glLoadIdentity();
+    glPushMatrix();
+
     for (int rot = 0; rot <= 360; rot += 90)
     {
         glRotated(rot, 0, 0, 1);
@@ -30,24 +55,6 @@ void display(void)
     glRectf(-12, -12, 12, 12);
 
     glPopMatrix();
-
-    //flag for white or black
-    bool w = false;
-    //draw corners
-
-    for (int rot = 0; rot <= 360; rot += 90)
-    {
-        glRotated(rot, 0, 0, 1);
-        for (int pos = 50; pos <= 100; pos += scl, w = !w)
-        {
-            if (w)
-                glColor3f(1, 1, 1);
-            else
-                glColor3f(0, 0, 0);
-
-            glRectf(pos, pos, pos + scl, pos + scl);
-        }
-    }
 
     glFlush();
 }
@@ -95,9 +102,17 @@ void spe_key(int key, int x, int y)
 {
 
     if (key == GLUT_KEY_LEFT)
-        spinDisplay_left();
+        //spinDisplay_left();
+        translate_x -= 10;
     else if (key == GLUT_KEY_RIGHT)
-        spinDisplay_right();
+        //spinDisplay_right();
+        translate_x += 10;
+    else if (key == GLUT_KEY_UP)
+        translate_y += 10;
+    else if (key == GLUT_KEY_DOWN)
+        translate_y -= 10;
+
+    glutPostRedisplay();
 }
 
 void my_mouse(int button, int state, int x, int y)
@@ -121,7 +136,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(200, 100);
-    glutCreateWindow("lab evaluation");
+    glutCreateWindow("Assignment 3");
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(my_keyboard);
