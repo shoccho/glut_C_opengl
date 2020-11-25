@@ -19,7 +19,17 @@ float p_pos_y = -1;
 float p_pos_z = 0;
 float xrot = 0;
 float yrot = 0;
-
+double height[204][204];
+void gen_height()
+{
+    for (int i = 0; i <= 204; i++)
+    {
+        for (int j = 0; j <= 204; j++)
+        {
+            height[i][j] = ((double)rand() / (RAND_MAX)) * 2;
+        }
+    }
+}
 void renderBitmapString(float x, float y, void *font, const char *string)
 {
     const char *c;
@@ -31,7 +41,7 @@ void renderBitmapString(float x, float y, void *font, const char *string)
 }
 static void key(unsigned char key, int x, int y)
 {
-    std::cout << key << std::endl;
+    // std::cout << key << std::endl;
     glutPostRedisplay();
     if (key == 'w')
         p_pos_z += .5;
@@ -46,16 +56,26 @@ static void key(unsigned char key, int x, int y)
         xrot += 2;
     else if (key == 'a')
         xrot -= 2;
+    else if (key == 'l')
+    {
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+    }
+    else if (key == 'o')
+    {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHT0);
+    }
 }
 void init()
 {
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
+    gen_height();
 }
 void draw(void)
 {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+
     int scl = 2;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -76,9 +96,9 @@ void draw(void)
     {
         for (int j = -100; j <= 100; j += scl)
         {
-            glVertex3d(i, -(rand() % 2), j);
-            glVertex3d(i + scl, -(rand() % 2), j);
-            glVertex3d(i, -(rand() % 2), j + scl);
+            glVertex3d(i, -height[i + 100][j + 100], j);
+            glVertex3d(i + scl, -height[i + 101][j + 100], j);
+            glVertex3d(i, -height[i + 100][j + 101], j + scl);
             // glVertex3d(i + scl, -rand() % 3, j + scl);
         }
     }
@@ -119,6 +139,7 @@ int main(int argc, char **argv)
     glutTimerFunc(0, timer, 0);
     glutKeyboardFunc(key);
     init();
+
     glutMainLoop();
     return 0;
 }

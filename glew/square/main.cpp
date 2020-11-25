@@ -5,6 +5,21 @@
 #include <string>
 #include <sstream>
 
+static void GLClearError()
+{
+    while (glGetError() != GL_NO_ERROR)
+    {
+        //pass
+    }
+}
+static void GLCheckError()
+{
+    while (GLenum error = glGetError())
+    {
+        std::cout << "[OPENGL ERROR] " << error << std::endl;
+    }
+}
+
 struct ShaderProgramSource
 {
     std::string VertexSource;
@@ -30,12 +45,10 @@ static ShaderProgramSource ParseShader(const std::string &filepath)
         {
             if (line.find("vertex") != std::string::npos)
             {
-                //vertex
                 type = ShaderType::VERTEX;
             }
             else if (line.find("fragment") != std::string::npos)
             {
-                //fragment
                 type = ShaderType::FRAGMENT;
             }
         }
@@ -101,6 +114,7 @@ int main(void)
     }
 
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
@@ -149,11 +163,22 @@ int main(void)
     // std::cout << source.FragmentSource << std::endl;
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
     glUseProgram(shader);
+    int location = glGetUniformLocation(shader, "u_Color");
+    // ASSERT(location != -1);
+    float r = 0.0f;
+    float inc = 0.05f;
     while (!glfwWindowShouldClose(window))
     {
 
         glClear(GL_COLOR_BUFFER_BIT);
+        GLClearError();
+        glUniform4f(location, r, 0.3f, 0.8f, 1.0f);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCheckError();
+
+        r += inc;
+        if (r >= 1 || r <= 0)
+            inc *= -1;
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
