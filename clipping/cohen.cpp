@@ -73,7 +73,18 @@ void drawClipping()
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
+bool bitwiseand(std::string x, std::string y)
+{
+    std::cout << "bit " << x << " " << y << std::endl;
+    int ix = strtod(x.c_str(), NULL), iy = strtod(y.c_str(), NULL);
 
+    std::cout << ix << " " << iy << " " << (ix & iy) << std::endl;
+    if ((ix & iy) == 0)
+    {
+        return true;
+    }
+    return false;
+}
 void addline()
 {
     tbrls.clear();
@@ -186,41 +197,93 @@ void clip()
     int i = -1;
     for (auto itr : tbrls)
     {
+
         i++;
-        line nl = lines[i];
-        int ones = std::count(itr.start.begin(), itr.start.end(), '1');
+        float m = (lines[i].end.y - lines[i].start.y) / (lines[i].end.x - lines[i].start.x);
+        line nl = (line){.start = lines[i].start, .end = lines[i].end};
 
-        if (ones == 1)
+        if (bitwiseand(itr.start, itr.end))
         {
-            // std::cout << "execution was here " << std::endl;
-            if (itr.start.at(0) == '1')
-                nl.start.y = std::min(lines[i].start.y, Max.y);
-            if (itr.start.at(1) == '1')
-                nl.start.y = std::max(lines[i].start.y, Min.y);
-            if (itr.start.at(2) == '1')
-                nl.start.x = std::min(lines[i].start.x, Max.x);
-            if (itr.start.at(3) == '1')
+            int ones = std::count(itr.start.begin(), itr.start.end(), '1');
+
+            if (ones == 1)
             {
-                nl.start.x = std::max(lines[i].start.x, Min.x);
+                // std::cout << "execution was here " << std::endl;
+                if (itr.start.at(0) == '1')
+                    nl.start.y = std::min(lines[i].start.y, Max.y);
+                if (itr.start.at(1) == '1')
+                    nl.start.y = std::max(lines[i].start.y, Min.y);
+                if (itr.start.at(2) == '1')
+                    nl.start.x = std::min(lines[i].start.x, Max.x);
+                if (itr.start.at(3) == '1')
+                {
+                    nl.start.x = std::max(lines[i].start.x, Min.x);
 
-                // std::cout << nl.start.x << std::endl;
+                    // std::cout << nl.start.x << std::endl;
+                }
             }
-        }
+            else if (ones > 1)
+            {
+                if (itr.start.at(0) == '1')
+                {
+                    nl.start.y = std::min(lines[i].start.y, Max.y);
+                    nl.start.x += (lines[i].start.y - nl.start.y) / m;
+                }
+                if (itr.start.at(1) == '1')
+                {
+                    nl.start.y = std::max(lines[i].start.y, Min.y);
+                    nl.start.x += (lines[i].start.y - nl.start.y) / m;
+                }
+                if (itr.start.at(2) == '1')
+                {
+                    nl.start.x = std::min(lines[i].start.x, Max.x);
+                    nl.start.y += m * (nl.start.x - lines[i].start.x);
+                }
+                if (itr.start.at(3) == '1')
+                {
+                    nl.start.x = std::max(lines[i].start.x, Min.x);
+                    nl.start.y += m * (nl.start.x - lines[i].start.x);
+                }
+            }
 
-        ones = std::count(itr.end.begin(), itr.end.end(), '1');
-        if (ones == 1)
-        {
-            if (itr.end.at(0) == '1')
-                nl.end.y = std::min(lines[i].end.y, Max.y);
-            if (itr.end.at(1) == '1')
-                nl.end.y = std::max(lines[i].end.y, Min.y);
-            if (itr.end.at(2) == '1')
-                nl.end.x = std::min(lines[i].end.x, Max.x);
-            if (itr.end.at(3) == '1')
-                nl.end.x = std::max(lines[i].end.x, Min.x);
-        }
+            ones = std::count(itr.end.begin(), itr.end.end(), '1');
+            if (ones == 1)
+            {
+                if (itr.end.at(0) == '1')
+                    nl.end.y = std::min(lines[i].end.y, Max.y);
+                if (itr.end.at(1) == '1')
+                    nl.end.y = std::max(lines[i].end.y, Min.y);
+                if (itr.end.at(2) == '1')
+                    nl.end.x = std::min(lines[i].end.x, Max.x);
+                if (itr.end.at(3) == '1')
+                    nl.end.x = std::max(lines[i].end.x, Min.x);
+            }
+            else if (ones > 1)
+            {
+                if (itr.end.at(0) == '1')
+                {
+                    nl.end.y = std::min(lines[i].end.y, Max.y);
+                    nl.end.x += (lines[i].end.y - nl.end.y) / m;
+                }
+                if (itr.end.at(1) == '1')
+                {
+                    nl.end.y = std::max(lines[i].end.y, Min.y);
+                    nl.end.x += (lines[i].end.y - nl.end.y) / m;
+                }
+                if (itr.end.at(2) == '1')
+                {
+                    nl.end.x = std::min(lines[i].end.x, Max.x);
+                    nl.end.y += m * (nl.end.x - lines[i].end.x);
+                }
+                if (itr.end.at(3) == '1')
+                {
+                    nl.end.x = std::max(lines[i].end.x, Min.x);
+                    nl.end.y += m * (nl.end.x - lines[i].end.x);
+                }
+            }
 
-        printline(nl);
+            printline(nl);
+        }
         cliped_lines.push_back(nl);
     }
 }
@@ -263,6 +326,21 @@ void display(void)
 void sp_key(int key, int x, int y)
 {
 }
+void printpos()
+{
+    if (clipped)
+    {
+        for (auto i : cliped_lines)
+        {
+            printline(i);
+        }
+    }
+    else
+    {
+        for (auto i : lines)
+            printline(i);
+    }
+}
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -274,10 +352,17 @@ void keyboard(unsigned char key, int x, int y)
     {
         addline();
     }
+    if (key == 'p')
+    {
+        printpos();
+    }
     if (key == 'c')
     {
         if (clipped)
+        {
             clipped = false;
+            glutPostRedisplay();
+        }
         else
         {
             cliped_lines.clear();
